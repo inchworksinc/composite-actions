@@ -22,7 +22,7 @@ runs:
         zip -r ./${{ inputs.name }}.zip ${{ inputs.artifacts }}
       shell: bash
     - name: Creating a GitHub release marked as prerelease
-      run: prerelease.sh
+      run: sh prerelease.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.artifacts_zip }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
