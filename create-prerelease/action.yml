@@ -7,12 +7,17 @@ inputs:
   target:
     description: 'The branch or tag to create the release from'
     required: true
-  artifacts_zip:
-    description: 'The path to a zip file containing the artifacts of the release'
+  artifacts:
+    description: 'A set of paths to the artifacts to upload to the release'
     required: true
 runs:
   using: "composite"
   steps:
+    - name: Zipping artifacts
+      run: |
+        echo "Zipping artifacts"
+        zip -r ./artifacts.zip ${{ inputs.artifacts }}
+      shell: bash
     - name: Creating a GitHub release marked as prerelease
       run: ./prerelease.sh ${{ inputs.name }} ${{ inputs.target }} ${{ inputs.artifacts_zip }}
       shell: bash
