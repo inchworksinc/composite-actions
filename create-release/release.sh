@@ -2,11 +2,35 @@
 RELEASE_NAME=$1
 # Branch name to target
 BRANCH_NAME=$2
-# Zip file containing the release artifacts
-ARTIFACTS_ZIP=$3
+# A set of paths to the artifacts to upload to the release
+ARTIFACTS=$3
+# Flag to mark the release as a pre-release
+PRE_RELEASE=$4
 
 echo "Creating release $RELEASE_NAME."
-CREATE_RELEASE_STATUS=$(gh release create $RELEASE_NAME --title v$RELEASE_NAME --target $BRANCH_NAME --prerelease 2>&1)
+
+if [ -z "${RELEASE_NAME}" ]; then
+    echo "ERROR :: Release name is required."
+    exit 1;
+fi
+
+if [ -z "${BRANCH_NAME}" ]; then
+    echo "ERROR :: Branch name is required."
+    exit 1;
+fi
+
+if [ -z "${ARTIFACTS}" ]; then
+    echo "ERROR :: Artifacts zip file is required."
+    exit 1;
+fi
+
+if [ "$PRE_RELEASE" = "true" ]; then
+    CREATE_RELEASE_STATUS=$(gh release create $RELEASE_NAME --title v$RELEASE_NAME --target $BRANCH_NAME --prerelease 2>&1)
+else
+    CREATE_RELEASE_STATUS=$(gh release create $RELEASE_NAME --title v$RELEASE_NAME --target $BRANCH_NAME 2>&1)
+
+fi
+
 if [[ $CREATE_RELEASE_STATUS == *"422"* ]]; then
     echo "CREATE_RELEASE_STATUS: $CREATE_RELEASE_STATUS"
     echo "ERROR :: Release $RELEASE_NAME already exists."

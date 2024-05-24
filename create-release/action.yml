@@ -1,5 +1,5 @@
-name: 'Create Prerelease'
-description: 'Create a prerelease on GitHub'
+name: 'Create release'
+description: 'Create a GitHub release'
 inputs:
   name:
     description: 'The name of the release'
@@ -13,6 +13,10 @@ inputs:
   artifacts:
     description: 'A set of paths to the artifacts to upload to the release'
     required: true
+  prerelease:
+    description: 'Flag to mark the release as a prerelease or not, default is true.'
+    default: 'true'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -22,7 +26,7 @@ runs:
         zip -r ./${{ inputs.name }}.zip ${{ inputs.artifacts }}
       shell: bash
     - name: Creating a GitHub release marked as prerelease
-      run: ${{ github.action_path }}/prerelease.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.name }}.zip
+      run: ${{ github.action_path }}/prerelease.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.name }}.zip ${{ inputs.prerelease }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
