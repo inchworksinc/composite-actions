@@ -26,7 +26,7 @@ runs:
         zip -r ./${{ inputs.name }}.zip ${{ inputs.artifacts }}
       shell: bash
     - name: Creating a GitHub release marked as prerelease
-      run: ${{ github.action_path }}/prerelease.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.name }}.zip ${{ inputs.prerelease }}
+      run: ${{ github.action_path }}/release.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.name }}.zip ${{ inputs.prerelease }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
