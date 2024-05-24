@@ -4,10 +4,11 @@ description: >
   based on the commits between the latest and the target branch
 author: 'FBITN'
 inputs:
-  version:
+  name:
     description: >
-      The version of the release. A new tag will be created using this value.
-      An error will be thrown if the tag already exists
+      The name of the release. It's a common practice to use the version number
+      A new tag will be created using the release name.
+      An error will be thrown if a tag wit the same name already exists
     required: true
   target:
     description: 'The branch or tag to create the release from'
@@ -31,7 +32,7 @@ runs:
         zip -r ./${{ inputs.artifact-name }}.zip ${{ inputs.artifacts }}
       shell: bash
     - name: Creating a GitHub release
-      run: ${{ github.action_path }}/release.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.artifact-name }}.zip ${{ inputs.prerelease }}
+      run: ${{ github.action_path }}/release.sh ${{ inputs.name }} ${{ inputs.target }} ${{ inputs.artifact-name }}.zip ${{ inputs.prerelease }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
