@@ -1,11 +1,13 @@
 name: 'Create release'
-description: 'Create a GitHub release'
+description: > 
+  Create a GitHub release with the provided artifacts, and generates release notes 
+  based on the commits between the latest and the target branch
+author: 'FBITN'
 inputs:
-  name:
-    description: 'The name of the release'
-    required: true
   version:
-    description: 'The version of the release'
+    description: >
+      The version of the release. A new tag will be created using this value.
+      An error will be thrown if the tag already exists
     required: true
   target:
     description: 'The branch or tag to create the release from'
@@ -13,6 +15,9 @@ inputs:
   artifacts:
     description: 'A set of paths to the artifacts to upload to the release'
     required: true
+  artifact-name:
+    description: 'The name of the generated zip file that will contain all the release artifacts'
+    default: 'artifact'
   prerelease:
     description: 'Flag to mark the release as a prerelease or not, default is true.'
     default: 'true'
@@ -22,11 +27,11 @@ runs:
   steps:
     - name: Zipping artifacts
       run: |
-        echo "Zipping artifacts"
-        zip -r ./${{ inputs.name }}.zip ${{ inputs.artifacts }}
+        echo "Zipping artifacts into the ${{ inputs.artifact-name }}.zip file"
+        zip -r ./${{ inputs.artifact-name }}.zip ${{ inputs.artifacts }}
       shell: bash
-    - name: Creating a GitHub release marked as prerelease
-      run: ${{ github.action_path }}/release.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.name }}.zip ${{ inputs.prerelease }}
+    - name: Creating a GitHub release
+      run: ${{ github.action_path }}/release.sh ${{ inputs.version }} ${{ inputs.target }} ${{ inputs.artifact-name }}.zip ${{ inputs.prerelease }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
