@@ -5,14 +5,22 @@ inputs:
   name:
     description: 'The name of the release tag to download the artifacts from'
     required: true
+  directory:
+    description: 'The directory to download files into, default (.)'
+    required: false
+    default: '.'
   pattern:
     description: 'Glob pattern to match the assets to be downloaded from the release'
     required: false
+  repository:
+    description: 'The repository to download the release from, default (current repository)'
+    required: false
+    default: ${{ github.repository }}
 runs:
   using: "composite"
   steps:
     - name: Downloading the release
-      run: ${{ github.action_path }}/download.sh ${{ inputs.name }} ${{ inputs.pattern }}
+      run: ${{ github.action_path }}/download.sh ${{ inputs.name }} {{ $inputs.directory }} ${{ inputs.pattern }} ${{ inputs.repository }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
