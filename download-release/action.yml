@@ -20,7 +20,7 @@ runs:
   using: "composite"
   steps:
     - name: Downloading the release
-      run: ${{ github.action_path }}/download.sh ${{ inputs.name }} {{ $inputs.directory }} ${{ inputs.pattern }} ${{ inputs.repository }}
+      run: ${{ github.action_path }}/download.sh ${{ inputs.name }} ${{ inputs.directory }} ${{ inputs.pattern }} ${{ inputs.repository }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
