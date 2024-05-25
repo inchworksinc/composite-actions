@@ -1,11 +1,11 @@
 # Name of the release
 RELEASE_NAME=$1
-# The directory to download files into
-DIRECTORY=$2
-# Glob pattern to match the assets to be downloaded from the release
-ASSETS_PATTERN=$3
 # GitHub repository
-REPOSITORY=$4
+REPOSITORY=$2
+# The directory to download files into
+DIRECTORY=$3
+# Glob pattern to match the assets to be downloaded from the release
+ASSETS_PATTERN=$4
 
 if [ -z "${RELEASE_NAME}" ]; then
     echo "ERROR :: Release name is required."
