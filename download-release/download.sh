@@ -17,7 +17,7 @@ if [ -z "${REPOSITORY}" ]; then
     exit 1;
 fi
 
-echo "Downloading release $RELEASE_NAME from $REPOSITORY to $DIRECTORY."
+echo "Downloading release $RELEASE_NAME from $REPOSITORY to $DIRECTORY"
 
 if [ -z "$ASSETS_PATTERN" ]; then
     gh release download $RELEASE_NAME --dir $DIRECTORY --repo $REPOSITORY
