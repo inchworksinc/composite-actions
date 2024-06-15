@@ -23,6 +23,10 @@ inputs:
     description: 'Flag to mark the release as a prerelease or not, default is true.'
     default: 'true'
     required: false
+  artifacts-directory:
+    description: 'The directory where the artifacts are located. Default is the root of the work-space.'
+    default: './'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -31,8 +35,10 @@ runs:
         echo "Zipping artifacts into the ${{ inputs.artifact-name }}.zip file"
         zip -r ./${{ inputs.artifact-name }}.zip ${{ inputs.artifacts }}
       shell: bash
+      working-directory: ${{ inputs.artifacts-directory }}
     - name: Creating a GitHub release
       run: ${{ github.action_path }}/release.sh ${{ inputs.name }} ${{ inputs.target }} ${{ inputs.artifact-name }}.zip ${{ inputs.prerelease }}
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
+      working-directory: ${{ inputs.artifacts-directory }}
